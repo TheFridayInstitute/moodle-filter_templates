@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Html Resource module version information
+ * Html Templates - Admin Settings Tree
  *
  * @package    filter_templates
  * @copyright  2016 Friday Institute for Educational Innovation, NC State University
@@ -22,12 +22,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2016050200;
-$plugin->cron      = 0;
-$plugin->component = 'filter_templates';
-$plugin->maturity  = MATURITY_ALPHA;
-$plugin->release   = '1';
+global $CFG, $PAGE;
+$ADMIN->add('localplugins', new admin_category('filter_templates', get_string('pluginname', 'filter_templates')));
+$ADMIN->add('filter_templates', new admin_externalpage('filter_templates_define',  get_string('templates', 'filter_templates'),
+    $CFG->wwwroot.'/local/catalog/setup.php'));
+$ADMIN->add('filter_templates', new admin_externalpage('filter_templates_categories',  get_string('categories'),
+    $CFG->wwwroot.'/local/catalog/course_setup.php'));
+
 
 ?>

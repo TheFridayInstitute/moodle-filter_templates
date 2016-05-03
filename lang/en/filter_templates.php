@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Html Resource module version information
+ * Html Templates - English Strings File
  *
  * @package    filter_templates
  * @copyright  2016 Friday Institute for Educational Innovation, NC State University
@@ -22,12 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2016050200;
-$plugin->cron      = 0;
-$plugin->component = 'filter_templates';
-$plugin->maturity  = MATURITY_ALPHA;
-$plugin->release   = '1';
+defined('MOODLE_INTERNAL') || die();
+$string['filtername'] = 'HTML Template';
+$string['filtername'] = 'HTML Templates';
+$string['norecord'] = 'ERROR: Could not find a record with ID {$a}';
 
 ?>
