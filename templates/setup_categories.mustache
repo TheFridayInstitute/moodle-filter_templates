@@ -1,0 +1,32 @@
+{{{header}}}
+{{{heading}}}
+
+{{#has_categories}}
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th></th>
+                <th>{{#str}}category, filter_templates{{/str}}</th>
+                <th>{{#str}}count, filter_tempaltes{{/str}}</th>
+            </tr>
+        </thead>
+        {{#categories}}
+            <tr>
+                <td>
+                    <a href="{{{url}}}?action=edit&id={{id}}&sesskey={{{sesskey}}}">{{{editicon}}}</a>
+                    {{#candelete}}
+                    &nbsp;<a href="{{{url}}}?action=delete&id={{id}}&sesskey={{{sesskey}}}">{{{deleteicon}}}</a>
+                    {{/candelete}}
+                </td>
+                <td>{{name}}</td>
+                <td>{{count}}</td>
+            </tr>
+        {{/categories}}
+    </table>
+    <hr/>
+{{/has_categories}}
+
+<h3>{{#str}}addnewcategory, filter_templates{{/str}}</h3>
+
+{{{form}}}
+{{{footer}}}
