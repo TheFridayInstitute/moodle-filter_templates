@@ -31,7 +31,7 @@ $systemcontext = context_system::instance();
 require_login();
 require_capability('moodle/site:config', $systemcontext);
 /// Build page
-$returnurl = $CFG->wwwroot.'/filter/templates/setup_category.php';
+$returnurl = $CFG->wwwroot.'/filter/templates/setup_templates.php';
 $PAGE->set_url($returnurl);
 $PAGE->set_context($systemcontext);
 $PAGE->set_title($SITE->fullname);
@@ -46,17 +46,17 @@ $action = (!empty($action) ? $action : 'index');
 //Add new categories
 if($action=="add"){
     confirm_sesskey();
-    $addform = new filter_template_form_category(new moodle_url($returnurl, array('action' => 'add')));
+    $addform = new filter_template_form_template(new moodle_url($returnurl, array('action' => 'add')));
     if($formdata = $addform->get_data()){
-        $DB->insert_record('filter_templates_cat', $formdata);
+        $formdata->content = $formdata->content['text'];
+        $DB->insert_record('filter_templates', $formdata);
     }
 }
 
 if($action=="delete"){
     confirm_sesskey();
     $id = required_param('id',PARAM_INT);
-    if($DB->count_records('filter_templates',array('category_id'=>$id))==0)
-        $DB->delete_records('filter_templates_cat',array('id'=>$id));
+    $DB->delete_records('filter_templates',array('id'=>$id));
 }
 
 //Set up the page template
@@ -65,47 +65,48 @@ $data->sesskey=sesskey();
 $data->url = $returnurl;
 $data->deleteicon = html_writer::empty_tag('img', array('src'=>$OUTPUT->pix_url('t/delete'), 'alt'=>get_string('delete'), 'class'=>'iconsmall'));
 $data->editicon = html_writer::empty_tag('img', array('src'=>$OUTPUT->pix_url('i/edit'), 'alt'=>get_string('edit'), 'class'=>'iconsmall'));
-$data->header = $OUTPUT->header();
-$data->footer = $OUTPUT->footer();
+
 
 
 //Render the form differently if you're editing an entry vs. adding
 if($action=="edit"){
-    $data->heading =  $OUTPUT->heading(get_string('rename_category', 'filter_templates'));
-    confirm_sesskey();
+    $data->heading =  $OUTPUT->heading(get_string('modify_template', 'filter_templates'));
     $id = required_param('id',PARAM_INT);
-    $record = $DB->get_record('filter_templates_cat',array('id'=>$id));
-    $editform = new filter_template_form_category(new moodle_url($returnurl, array('action' => 'edit')), array('record'=>$record));
+    $record = $DB->get_record('filter_templates',array('id'=>$id));
+    $editform = new filter_template_form_template(new moodle_url($returnurl, array('action' => 'edit')), array('record'=>$record));
     if($formdata = $editform->get_data()){
-        $DB->update_record('filter_templates_cat',$formdata);
-        $action="index";
+        confirm_sesskey();
+        $formdata->content = $formdata->content['text'];
+        $DB->update_record('filter_templates',$formdata);
+        $record = $DB->get_record('filter_templates',array('id'=>$id));
     }
-    else {
-        $data->form = $editform->render();
-        //Output the page template
-        echo $OUTPUT->render_from_template('filter_templates/displayform', $data);
-    }
+    $data->id = $record->id;
+    $data->preview = $record->content;
+    $data->form = $editform->render();
+    //Output the page template
+    $PAGE->navbar->add($record->internal_title, new moodle_url('/filter/templates/setup_templates.php', array('id'=>$record->id, 'action'=>'edit')), global_navigation::TYPE_CUSTOM);
+    $data->header = $OUTPUT->header();
+    $data->footer = $OUTPUT->footer();
+    echo $OUTPUT->render_from_template('filter_templates/edit_template', $data);
 }
 
 //If we're not editing, or we've exited edit mode, display the full page
 if($action!="edit"){
-    $data->heading =  $OUTPUT->heading(get_string('manage_categories', 'filter_templates'));
+    $data->heading =  $OUTPUT->heading(get_string('manage_templates', 'filter_templates'));
     //Get the list of categories
-    $data->categories = filter_templates_get_categories();
+    $data->templates = filter_templates_get_templates();
 
     //Categories shouldn't be passed if there aren't any.
-    if(count($data->categories)!=0)$data->has_categories = true;;
+    if(count($data->templates)!=0)$data->has_templates = true;;
 
-    //Flag categories with zero templates associated - those are the only ones that can be deleted.
-    foreach($data->categories as $key=>$elem){
-        if($elem['count']==0)$data->categories[$key]['candelete'] = true;
-    }
 
     //User can add a new category on the bottom of the page
-    $addform = new filter_template_form_category(new moodle_url($returnurl, array('action' => 'add')));
+    $addform = new filter_template_form_template(new moodle_url($returnurl, array('action' => 'add')));
     $data->form = $addform->render();
 
     //Output the page template
-    echo $OUTPUT->render_from_template('filter_templates/setup_categories', $data);
+    $data->header = $OUTPUT->header();
+    $data->footer = $OUTPUT->footer();
+    echo $OUTPUT->render_from_template('filter_templates/setup_templates', $data);
 }
 ?>

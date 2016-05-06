@@ -19,4 +19,18 @@ $string['count'] = "Count";
 $string['manage_categories'] = 'Manage Categories';
 $string['addnewcategory'] = "Add New Category";
 $string['rename_category'] = "Rename Category";
+$string['internal_title'] = "Internal/Working Title";
+$string['internal_notes'] = "Internal/Working Notes";
+$string['content'] = "Content";
+$string['addnewtemplate'] = "Add New Template";
+$string['manage_templates'] = "Manage Templates";
+$string['modify_template'] = "Modify Template";
+$string['template'] = "Template";
+$string['notes'] = "Notes";
+$string['id'] = "Template ID";
+$string['tooltip'] = "To use a template, enter <code>[[template {id}]]</code> in any text editor, substituting {id} for the ID number below.";
+$string['tousethis'] = 'To use this template, enter <code>[[template {$a}]]</code> in any text editor.';
+
+$string['confirmation'] = "Are you sure you want to delete this item?";
+
 ?>

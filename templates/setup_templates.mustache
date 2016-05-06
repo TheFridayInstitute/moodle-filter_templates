@@ -1,0 +1,37 @@
+{{{header}}}
+{{{heading}}}
+
+{{#has_templates}}
+<div class="alert alert-info" role="alert">{{#str}}tooltip, filter_templates{{/str}}</div>
+
+
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th></th>
+        <th>{{#str}}id, filter_templates{{/str}}</th>
+        <th>{{#str}}template, filter_templates{{/str}}</th>
+        <th>{{$str}}notes, filter_templates{{/str}}</th>
+        <th>{{#str}}category, filter_templates{{/str}}</th>
+    </tr>
+    </thead>
+    {{#templates}}
+    <tr>
+        <td>
+            <a href="{{{url}}}?action=edit&id={{id}}&sesskey={{{sesskey}}}" target="_blank">{{{editicon}}}</a>
+            &nbsp;<a href="{{{url}}}?action=delete&id={{id}}&sesskey={{{sesskey}}}" onclick="return confirm('{{#str}}confirmation, filter_templates{{/str}}');">{{{deleteicon}}}</a>
+        </td>
+        <td>{{id}}</td>
+        <td>{{internal_title}}</td>
+        <td>{{internal_notes}}</td>
+        <td>{{category_name}}</td>
+    </tr>
+    {{/templates}}
+</table>
+<hr/>
+{{/has_templates}}
+
+<h3>{{#str}}addnewtemplate, filter_templates{{/str}}</h3>
+
+{{{form}}}
+{{{footer}}}

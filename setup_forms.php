@@ -48,9 +48,51 @@ class filter_template_form_category extends moodleform{
 
         if (isset($record)) {
             $this->set_data($record);
-            print_r($record);
         }
 
         $this->add_action_buttons();
+    }
+}
+
+class filter_template_form_template extends moodleform{
+    /*
+     * Sets up form to add new template categories
+     */
+    public function definition(){
+        global $CFG;
+        global $DB;
+        $mform = $this->_form; // Don't forget the underscore!
+
+        if (isset($this->_customdata['record']) && is_object($this->_customdata['record'])) {
+            $record = $this->_customdata['record'];
+        }
+
+        //Filter Template Category: ID (readonly, hidden)
+        $mform->addElement('hidden', 'id');
+        $mform->setType('id', PARAM_INT);
+
+        //Filter Template Category: Title
+        $mform->addElement('text', 'internal_title', get_string('internal_title','filter_templates'), array('style'=>'width: 100%')); // Add elements to your form
+        $mform->setType('internal_title', PARAM_TEXT);                   //Set type of element
+        $mform->addRule('internal_title', get_string('required'), 'required', null, 'client');
+        $mform->addRule('internal_title', get_string('maximumchars', '', 64), 'maxlength', 64, 'client');
+
+        $categories = $DB->get_records_menu('filter_templates_cat', null, 'name');
+        $mform->addElement('select', 'category_id', get_string('category', 'filter_templates'), $categories);
+        $mform->addRule('category_id', get_string('required'), 'required', null, 'client');
+
+
+        $mform->addElement('textarea', 'internal_notes', get_string("internal_notes", "filter_templates"), 'wrap="virtual" rows="10" cols="50"');
+
+        $content = $mform->addElement('editor', 'content', get_string('content', 'filter_templates'));
+        $mform->addRule('content', get_string('required'), 'required', null, 'client');
+        $mform->setType('content', PARAM_RAW);
+
+        if (isset($record)) {
+            $this->set_data($record);
+            $content->setValue(array('text' => $record->content));
+        }
+
+        $this->add_action_buttons(false);
     }
 }

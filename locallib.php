@@ -50,3 +50,26 @@ function filter_templates_get_categories(){
 
     return $return;
 }
+
+/*
+ * Get an array, numerically indexed, of all of the templates
+ * $return array
+ */
+function filter_templates_get_templates(){
+    global $DB;
+    $categories = $DB->get_records_menu('filter_templates_cat');
+
+    $records = $DB->get_records('filter_templates',null,'category_id, internal_title');
+    $count = 0;
+    $return = array();
+    foreach($records as $r){
+        $return[$count]['id'] = $r->id;
+        $return[$count]['internal_title'] = $r->internal_title;
+        $return[$count]['internal_notes'] = $r->internal_notes;
+        $return[$count]['content'] = $r->content;
+        $return[$count]['category_id'] = $r->category_id;
+        $return[$count]['category_name'] = $categories[$r->category_id];
+        $count++;
+    }
+    return $return;
+}

@@ -26,7 +26,7 @@
 global $CFG, $PAGE;
 $ADMIN->add('filtersettings', new admin_category('filter_templates', get_string('filtername', 'filter_templates')));
 $ADMIN->add('filter_templates', new admin_externalpage('filter_templates_define',  get_string('templates', 'filter_templates'),
-    $CFG->wwwroot.'/local/catalog/setup.php'));
+    $CFG->wwwroot.'/filter/templates/setup_templates.php'));
 $ADMIN->add('filter_templates', new admin_externalpage('filter_templates_categories',  get_string('categories', 'filter_templates'),
     $CFG->wwwroot.'/filter/templates/setup_category.php'));
 
