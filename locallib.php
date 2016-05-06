@@ -28,11 +28,11 @@
  */
 function filter_templates_get_categories(){
     global $DB;
-    
-    $templates = $DB->get_records('filter_templates',null, '','category_id');
+
+    $templates = $DB->get_records('filter_templates');
     $t_count = array();
     foreach($templates as $t){
-        if(isset($t_count[$t->category_id]))$t_count[$t->category_id]++;
+        if(isset($t_count[$t->category_id]))$t_count[$t->category_id] = $t_count[$t->category_id]+1 ;
         else $t_count[$t->category_id] = 1;
     }
 
